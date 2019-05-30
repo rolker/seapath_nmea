@@ -3,7 +3,7 @@
 import serial
 import socket
 import rospy
-import rosbag
+#import rosbag
 from  sensor_msgs.msg import NavSatFix
 from sensor_msgs.msg import TimeReference
 from marine_msgs.msg import NavEulerStamped
@@ -34,8 +34,8 @@ def seapath_nmea_listener():
     else:
         udp_out = None
             
-    timestamp = datetime.datetime.utcfromtimestamp(rospy.Time.now().to_time()).isoformat()
-    bag = rosbag.Bag('nodes/seapath_nmea_'+('-'.join(timestamp.split(':')))+'.bag', 'w', rosbag.Compression.BZ2)
+    #timestamp = datetime.datetime.utcfromtimestamp(rospy.Time.now().to_time()).isoformat()
+    #bag = rosbag.Bag('nodes/seapath_nmea_'+('-'.join(timestamp.split(':')))+'.bag', 'w', rosbag.Compression.BZ2)
 
     while not rospy.is_shutdown():
         if input_type == 'serial':
@@ -49,7 +49,7 @@ def seapath_nmea_listener():
         now = rospy.get_rostime()    
         nmea_parts = nmea_in.strip().split(',')
         if len(nmea_parts):
-            print nmea_parts
+            #print nmea_parts
             try:
                 if nmea_parts[0] == '$GPZDA' and len(nmea_parts) >= 5:
                     tref = TimeReference()
@@ -65,7 +65,7 @@ def seapath_nmea_listener():
                     tref.time_ref = rospy.Time(calendar.timegm(zda.timetuple()),zda.microsecond*1000)
                     tref.source = 'seapath'
                     timeref_pub.publish(tref)
-                    bag.write('/seapath_nmea/time_reference', tref)
+                    #bag.write('/seapath_nmea/time_reference', tref)
                 if nmea_parts[0] == '$PVGGA' and len(nmea_parts) >= 10:
                     latitude = int(nmea_parts[2][0:2])+float(nmea_parts[2][2:])/60.0
                     if nmea_parts[3] == 'S':
@@ -81,7 +81,7 @@ def seapath_nmea_listener():
                     nsf.longitude = longitude
                     nsf.altitude = altitude
                     position_pub.publish(nsf)
-                    bag.write('/seapath_nmea/position', nsf)
+                    #bag.write('/seapath_nmea/position', nsf)
                 if nmea_parts[0] == '$PVHDT' and len(nmea_parts) >= 2:
                     heading = float(nmea_parts[1])
                     nes = NavEulerStamped()
@@ -89,7 +89,7 @@ def seapath_nmea_listener():
                     nes.header.frame_id = 'seapath_operator'
                     nes.orientation.heading = heading
                     orientation_pub.publish(nes)
-                    bag.write('/seapath_nmea/orientation', nes)
+                    #bag.write('/seapath_nmea/orientation', nes)
             except ValueError:
                 pass
     bag.close()
