@@ -3,7 +3,7 @@ project(seapath)
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
-  marine_msgs
+  project11_msgs
   sensor_msgs
   rospy
 )
@@ -13,7 +13,7 @@ catkin_python_setup()
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES posmv
-#  CATKIN_DEPENDS geometry_msgs marine_msgs rospy
+#  CATKIN_DEPENDS geometry_msgs project11_msgs rospy
 #  DEPENDS system_lib
 )
 
