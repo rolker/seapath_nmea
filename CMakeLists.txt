@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(seapath)
+project(seapath_nmea)
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
